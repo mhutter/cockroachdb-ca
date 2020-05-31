@@ -11,7 +11,7 @@ Makefile that boostraps a CockroachDB CA and creates the required Kubernetes sec
 
 == Usage
 
-To get started, simply run `make`. This will prepare the CA and generate the required secret manifests:
+To get started, simply run `make NAMESPACE=my-app`. This will prepare the CA and generate the required secret manifests:
 
 * `cockroachdb-client.root.secret.yml` - client certificate for the `root` user
 * `cockroachdb-node.secret.yml` - certificates for the CockroachDB nodes plus all client certificates
@@ -22,7 +22,7 @@ Overwrite the `CLIENTS` make variable to generate additional clients.
 
 IMPORTANT: Always include `root` in the list of clients!
 
-    make CLIENTS='root myapp-dev myapp-test'
+    make NAMESPACE=my-app CLIENTS='root myapp-dev myapp-test'
 
 
 == License

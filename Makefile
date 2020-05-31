@@ -1,6 +1,7 @@
 # Configuration
 COCKROACHDB_VERSION = 20.1.1
 CLIENTS = root
+NAMESPACE = default
 
 # CockroachDB specifics
 CRFLAGS = --certs-dir="/data/$(CERTS_DIR)" --ca-key="/data/$(CA_KEY)"
@@ -33,8 +34,8 @@ cockroachdb-client.%.secret.yml: $(CERTS_DIR)/client.%.crt
 $(CERTS_DIR)/node.crt: $(CA_KEY)
 	$(COCKROACH) cert create-node \
 		localhost 127.0.0.1 \
-		cockroachdb-public cockroachdb-public.default cockroachdb-public.default.svc.cluster.local \
-		'*.cockroachdb' '*.cockroachdb.default' '*.cockroachdb.default.svc.cluster.local'
+		cockroachdb-public cockroachdb-public.$(NAMESPACE) cockroachdb-public.$(NAMESPACE).svc.cluster.local \
+		'*.cockroachdb' '*.cockroachdb.$(NAMESPACE)' '*.cockroachdb.$(NAMESPACE).svc.cluster.local'
 
 $(CERTS_DIR)/client.%.crt: $(CA_KEY)
 	$(COCKROACH) cert create-client $*
