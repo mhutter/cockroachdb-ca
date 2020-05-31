@@ -17,7 +17,7 @@ CLIENT_MANIFESTS = $(addsuffix .secret.yml,$(addprefix cockroachdb-client.,$(CLI
 manifests: $(CLIENT_MANIFESTS) cockroachdb-node.secret.yml
 
 cockroachdb-node.secret.yml: $(CERTS_DIR)/node.crt $(CLIENT_CERTS)
-	kubectl create secret generic cockroach.node \
+	kubectl create secret generic cockroachdb.node \
 		--dry-run=client \
 		--from-file="$(CERTS_DIR)" \
 		-o yaml > "$@"
