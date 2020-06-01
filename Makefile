@@ -13,17 +13,17 @@ CA_DIR = ca
 CA_KEY = $(CA_DIR)/ca.key
 CA_CERT = $(CERTS_DIR)/ca.crt
 CLIENT_CERTS = $(addsuffix .crt,$(addprefix $(CERTS_DIR)/client.,$(CLIENTS)))
-CLIENT_MANIFESTS = $(addsuffix .secret.yml,$(addprefix cockroachdb-client.,$(CLIENTS)))
+CLIENT_MANIFESTS = $(addsuffix .secret.yaml,$(addprefix cockroachdb-client.,$(CLIENTS)))
 
-manifests: $(CLIENT_MANIFESTS) cockroachdb-node.secret.yml
+manifests: $(CLIENT_MANIFESTS) cockroachdb-node.secret.yaml
 
-cockroachdb-node.secret.yml: $(CERTS_DIR)/node.crt $(CLIENT_CERTS)
+cockroachdb-node.secret.yaml: $(CERTS_DIR)/node.crt $(CLIENT_CERTS)
 	kubectl create secret generic cockroachdb.node \
 		--dry-run=client \
 		--from-file="$(CERTS_DIR)" \
 		-o yaml > "$@"
 
-cockroachdb-client.%.secret.yml: $(CERTS_DIR)/client.%.crt
+cockroachdb-client.%.secret.yaml: $(CERTS_DIR)/client.%.crt
 	kubectl create secret generic cockroachdb.client.$* \
 		--dry-run=client \
 		--from-file="$(CA_CERT)" \
@@ -48,4 +48,4 @@ $(CA_DIR):
 
 .PHONY: clean
 clean:
-	rm -rf *.yml ca certs
+	rm -rf *.yaml ca certs
